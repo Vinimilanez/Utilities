@@ -9,11 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DataBaseConnection\MySQL\" />
-    <Folder Include="DataBaseConnection\Oracle\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="MySql.Data" Version="8.0.19" />
+    <PackageReference Include="Oracle.ManagedDataAccess" Version="19.6.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
     <PackageReference Include="System.Diagnostics.EventLog" Version="4.7.0" />
   </ItemGroup>
