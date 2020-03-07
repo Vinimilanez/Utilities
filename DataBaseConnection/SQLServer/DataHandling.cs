@@ -95,7 +95,8 @@ namespace Utilities.DataBaseConnection.SQLServer
             }
             catch(Exception ex)
             {
-                SystemLog.WriteLog(String.Format("SQLServer.ReadQuery; {0} {1} >> {2} {0} SQL:{3};", Environment.NewLine, ex.Message, ex.StackTrace, SQL));
+                SystemLog.WriteLog(String.Format("SQLServer.ReadQuery; {0} {1} >> {2} {0} SQL:{3};", 
+                    Environment.NewLine, ex.Message, ex.StackTrace, SQL));
             }
             finally
             {
