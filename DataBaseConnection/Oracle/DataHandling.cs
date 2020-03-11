@@ -9,13 +9,19 @@ namespace Utilities.DataBaseConnection.Oracle
 {
     public class DataHandling
     {
-        public Connection Connection { get; private set; }
+        public OracleConnection OracleConnection { get; private set; }
 
-        public DataHandling(Connection connection)
+        public DataHandling(String dataSouce, String user, String password)
         {
-            this.Connection = connection;
+            OracleConnectionStringBuilder builder = new OracleConnectionStringBuilder();
+
+            builder.DataSource = dataSouce;
+            builder.UserID = user;
+            builder.Password = password;
+
+            this.OracleConnection = new OracleConnection(builder.ConnectionString);
         }
-        
+
         /// <summary>
         ///     Connection test method;
         ///     Metodo para o teste de conexão;
@@ -30,7 +36,7 @@ namespace Utilities.DataBaseConnection.Oracle
             Boolean result = false;
             try
             {
-                Connection.OracleConnection.Open();
+                OracleConnection.Open();
                 result = true;
             }
             catch(Exception ex)
@@ -39,7 +45,7 @@ namespace Utilities.DataBaseConnection.Oracle
             }
             finally
             {
-                Connection.OracleConnection.Close();
+                OracleConnection.Close();
             }
             return result;
         }
@@ -68,8 +74,8 @@ namespace Utilities.DataBaseConnection.Oracle
             DataSet result = new DataSet();
             try
             {
-                Connection.OracleConnection.Open();
-                using (OracleCommand cmd = new OracleCommand(SQL, Connection.OracleConnection))
+                OracleConnection.Open();
+                using (OracleCommand cmd = new OracleCommand(SQL, OracleConnection))
                 {
                     if(oracleParameters != null)
                     {
@@ -85,7 +91,7 @@ namespace Utilities.DataBaseConnection.Oracle
             }
             finally
             {
-                Connection.OracleConnection.Close();
+                OracleConnection.Close();
             }
             return result;
         }
@@ -114,8 +120,8 @@ namespace Utilities.DataBaseConnection.Oracle
             Boolean result = false;
             try
             {
-                Connection.OracleConnection.Open();
-                using (OracleCommand cmd = new OracleCommand(SQL, Connection.OracleConnection))
+                OracleConnection.Open();
+                using (OracleCommand cmd = new OracleCommand(SQL, OracleConnection))
                 {
                     if(oracleParameters != null) 
                     {
@@ -131,7 +137,7 @@ namespace Utilities.DataBaseConnection.Oracle
             }
             finally
             {
-                Connection.OracleConnection.Close();
+                OracleConnection.Close();
             }
             return result;
         }

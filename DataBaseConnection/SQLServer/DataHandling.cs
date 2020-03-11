@@ -8,20 +8,18 @@ namespace Utilities.DataBaseConnection.SQLServer
 {
     public class DataHandling
     {
-        public Connection Connection { get; private set; }
+        public SqlConnection SqlConnection { get; private set; }
         
-        /// <summary>
-        ///     Class for executing SQL commands using the SQLServer database;
-        ///     Classe para a execução de comandos SQL utilizando o banco de dados SQLServer;
-        /// </summary>
-        /// <param name="connection">
-        ///     Connection to the database;
-        ///     Conexão com o banco de dados;
-        ///     (Utilities.DataBaseConnection.SQLServer.Connection)
-        /// </param>
-        public DataHandling(Connection connection)
+        public DataHandling(String dataSouce, String dataBase, String user, String password)
         {
-            this.Connection = connection;
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+
+            builder.DataSource = dataSouce;
+            builder.UserID = user;
+            builder.Password = password;
+            builder.InitialCatalog = dataBase;
+
+            this.SqlConnection = new SqlConnection(builder.ConnectionString.ToString());
         }
 
         /// <summary>
@@ -38,7 +36,7 @@ namespace Utilities.DataBaseConnection.SQLServer
             Boolean result = false;
             try
             {
-                Connection.SqlConnection.Open();
+                SqlConnection.Open();
                 result = true;
             }
             catch (Exception ex)
@@ -47,7 +45,7 @@ namespace Utilities.DataBaseConnection.SQLServer
             }
             finally
             {
-                Connection.SqlConnection.Close();
+                SqlConnection.Close();
             }
             return result;
         }
@@ -76,8 +74,8 @@ namespace Utilities.DataBaseConnection.SQLServer
             DataSet result = new DataSet();
             try
             {
-                Connection.SqlConnection.Open();
-                using (SqlCommand cmd = new SqlCommand(SQL, Connection.SqlConnection))
+                SqlConnection.Open();
+                using (SqlCommand cmd = new SqlCommand(SQL, SqlConnection))
                 {
 
                     if (sqlParameters != null)
@@ -100,7 +98,7 @@ namespace Utilities.DataBaseConnection.SQLServer
             }
             finally
             {
-                Connection.SqlConnection.Close();
+                SqlConnection.Close();
             }
             return result;
         }
@@ -129,8 +127,8 @@ namespace Utilities.DataBaseConnection.SQLServer
             Boolean result = false;
             try
             {
-                Connection.SqlConnection.Open();
-                using (SqlCommand cmd = new SqlCommand(SQL, Connection.SqlConnection))
+                SqlConnection.Open();
+                using (SqlCommand cmd = new SqlCommand(SQL, SqlConnection))
                 {
 
                     if (sqlParameters != null)
@@ -151,7 +149,7 @@ namespace Utilities.DataBaseConnection.SQLServer
             }
             finally
             {
-                Connection.SqlConnection.Close();
+                SqlConnection.Close();
             }
             return result;
         }

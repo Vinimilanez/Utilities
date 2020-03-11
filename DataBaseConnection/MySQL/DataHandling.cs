@@ -9,11 +9,31 @@ namespace Utilities.DataBaseConnection.MySQL
 {
     public class DataHandling
     {
-        private Connection Connection { get; set; }
-        
-        public DataHandling(Connection connection)
+        public MySqlConnection MySQLConnection { get; private set; }
+
+        public DataHandling(String server, String dataBase, String user, String password)
         {
-            this.Connection = connection;
+            MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder();
+
+            builder.Database = dataBase;
+            builder.Server = server;
+            builder.UserID = user;
+            builder.Password = password;
+
+            this.MySQLConnection = new MySqlConnection(builder.ConnectionString);
+        }
+
+        public DataHandling(String server, String dataBase, String user, String password, uint port)
+        {
+            MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder();
+
+            builder.Database = dataBase;
+            builder.Server = server;
+            builder.UserID = user;
+            builder.Password = password;
+            builder.Port = port;
+
+            this.MySQLConnection = new MySqlConnection(builder.ConnectionString);
         }
 
         /// <summary>
@@ -30,7 +50,7 @@ namespace Utilities.DataBaseConnection.MySQL
             Boolean result = false;
             try
             {
-                Connection.MySQLConnection.Open();
+                MySQLConnection.Open();
                 result = true;
             }
             catch(Exception ex)
@@ -39,7 +59,7 @@ namespace Utilities.DataBaseConnection.MySQL
             }
             finally
             {
-                Connection.MySQLConnection.Close();
+                MySQLConnection.Close();
             }
             return result;
         }
@@ -68,8 +88,8 @@ namespace Utilities.DataBaseConnection.MySQL
             DataSet result = new DataSet();
             try
             {
-                Connection.MySQLConnection.Open();
-                using (MySqlCommand cmd = new MySqlCommand(SQL, Connection.MySQLConnection))
+                MySQLConnection.Open();
+                using (MySqlCommand cmd = new MySqlCommand(SQL, MySQLConnection))
                 {
                     if (mySQLParameters != null) 
                     {
@@ -86,7 +106,7 @@ namespace Utilities.DataBaseConnection.MySQL
             }
             finally
             {
-                Connection.MySQLConnection.Close();
+                MySQLConnection.Close();
             }
             return result;
         }
@@ -115,8 +135,8 @@ namespace Utilities.DataBaseConnection.MySQL
             Boolean result = false;
             try
             {
-                Connection.MySQLConnection.Open();
-                using (MySqlCommand cmd = new MySqlCommand(SQL, Connection.MySQLConnection))
+                MySQLConnection.Open();
+                using (MySqlCommand cmd = new MySqlCommand(SQL, MySQLConnection))
                 {
                     if (mySqlParameters != null)
                     {
@@ -134,7 +154,7 @@ namespace Utilities.DataBaseConnection.MySQL
             }
             finally
             {
-                Connection.MySQLConnection.Close();
+                MySQLConnection.Close();
             }
             return result;
         }
